@@ -1,0 +1,93 @@
+Here is list of commons error
+
+
+
+
+
+-----------------------------------------------------------------------
+
+1. ModuleNotFoundError: No module named 'pyaudio'
+
+--- Normal users:
+
+If executing the python file show an error  [ No module named 'pyaudio' ] you must follow this steps
+
+----- Windows
+
+    1.1 pip install pipwin 
+
+    1.2 pip install PyAudio
+
+----- Linux, Ubuntu
+
+    1.1 sudo apt-get install portaudio19-dev python-pyaudio
+
+    1.2 pip install PyAudio
+
+
+If in installing procces show other error, please continue reading
+
+
+--- For Conda users:
+
+If you use the python with conda, you can install the PyAudio module with conda
+
+conda install pyaudio
+
+-----------------------------------------------------------------------
+
+
+
+
+
+
+------------------------------------------------------------------------
+
+2. Error installing PyAudio
+
+--- Normal users:
+
+If in the proccess of installing the PyAudio packages flash an error, an the error includes
+error: Microsoft Visual C++ 14.0 is required. Get it with "Build Tools for Visual Studio": https://visualstudio.microsoft.com/downloads/
+
+Yu must access to the url and download the component required.
+
+
+
+--- For Conda users:
+
+If you use the python with conda, you can install the PyAudio module with conda
+
+conda install pyaudio
+
+-------------------------------------------------------------------------
+
+
+
+
+
+-------------------------------------------------------------------------
+
+3. Resource stopwords or punkt not found. [nlkt module]
+
+Open your Python interpreter and write
+
+import nltk
+nltk.download('stopwords')
+nltk.download('punkt')
+
+
+Easy install run the 'NLTK.install.py'
+
+--------------------------------------------------------------------------
+
+
+
+
+---------------------------------------------------------------------------
+
+4. Some modules can't found when run the python file
+
+Unfortunately you need to install the modules were didn't find manually
+
+----------------------------------------------------------------------------

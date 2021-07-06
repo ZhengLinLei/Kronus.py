@@ -1,0 +1,39 @@
+For auto create a 'requirement.txt' file you can install < pipreqs >
+
+ - pip install pipreqs
+
+And then use the cli
+
+ - pipreqs < path >
+
+In this case is 
+
+ - pipreqs ./src
+
+
+And will create a 'requirement.txt' file, and remmenber must change the path in 'setup.py'
+
+
+---------------------------------------------
+
+LIST OF MODULES
+
+SpeechRecognition
+pyttsx3
+wikipedia
+pyjokes
+smtplib
+PyAutoGUI
+nltk
+requests
+Pillow
+
+datetime
+os
+json
+random
+subprocess
+string
+webbrownser
+random
+re

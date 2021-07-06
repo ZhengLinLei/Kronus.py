@@ -1,0 +1,10 @@
+{
+    "activated": false,
+    "server": "localhost",
+    "port": 587,
+    "login": {
+        "username": "localhost",
+        "password": "localhost",
+        "email": "default@localhost"
+    }
+}
