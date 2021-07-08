@@ -35,16 +35,20 @@ import subprocess
 import pyautogui # CREATE GUI
 from PIL import Image
 
+
 import nltk
 from nltk.corpus import stopwords # REMOVE STOP WORDS
 from nltk.tokenize import word_tokenize
 
 stopWords = stopwords.words('english')
-stopWords.extend(['today', 'yesterday', 'tomorrow', 'search', 'send'])
+stopWords.extend(['today', 'yesterday', 'tomorrow', 'search', 'send', "what's", 'tell'])
 
 import re
 
 regexEmail = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+regexUri = r'[A-Za-z0-9]+\.[a-z]+'
+
+from sys import platform
 
 
 # ============================================================
@@ -202,8 +206,12 @@ def sendEmail():
             talk(f'Tell me the {paramsMSG[i]}')
             params[i] = getOrders().lower() # GET COMMANDS
 
-            if(not params[i] or not re.match(regexEmail, params[0])):
-                talk("Sorry, I can't understand what did you say. Please enter manually the text")
+            if(not params[i] or not re.match(regexEmail, params[0]) or 'manually' in params[i]):
+
+                if (not params[i] or not re.match(regexEmail, params[0])):
+                    talk("Sorry, I can't understand what did you say. Please enter manually the text")
+                else:
+                    talk('Please enter manually')
 
                 params[i] = input() # CAN BE CHANGED TO GUI INPUT
             else:
@@ -256,10 +264,43 @@ def wikipedia(query):
         talk(result)
     except Exception as e:
         print(e)
-        if(not isInternetConnection()):    # IN CASE THE SYSTEM HAVE INTERNET CONNECTION BUT RETURNS AN ERROR
+        if(isInternetConnection()):    # IN CASE THE SYSTEM HAVE INTERNET CONNECTION BUT RETURNS AN ERROR
             talk('Sorry something bad happens, please try again')
 
 
+# OPEN WEBSITE
+def openWebsite(query):
+    if isInternetConnection():
+        talk('Openning website...')
+        print(query)
+
+        # If no valid browser found then use webbrowser to automatically detect one
+        try:
+            supported_platforms = {'win32': 'windows-default', 'cygwin': 'cygstart', 'darwin': 'macosx'}
+            if platform not in supported_platforms:
+                browser_name = 'Automatically detected'
+                browser_obj = wb.get()
+            else:
+                browser_name = supported_platforms[platform]
+                if browser_name == 'cygstart':
+                    # Cygwin requires us to register browser type (or export BROWSER='cygstart')
+                    wb.register(browser_name, None, wb.GenericBrowser(browser_name))
+                browser_obj = wb.get(browser_name)
+        except wb.Error:
+            pass
+
+        print('Browser: '+browser_name)
+
+        if not browser_obj.open(query):
+            wb.open(query)
+
+
+# OPEN MAPS
+def openMap(query):
+    talk('Opening the place on the map')
+
+    url = f'https://maps.google.com/?q={query}'
+    openWebsite(url)
 
 def isInternetConnection():
 
@@ -301,19 +342,25 @@ if __name__ == '__main__':
 
         #------------------------------------------
 
-        if any(str in query for str in ['kronus', 'cronus', 'canoes', 'canus', 'where are you', 'assistant']):
+        if any(str in query for str in ['kronus', 'cronus', 'canoes', 'canus', 'where are you', 'assistant', 'venus', 'krenus']):
 
             # RESPOND
             talk("Yes, i'm here")
             talk("What can I help you?")
 
-        elif query in ['hi', 'hello']:
+        elif any(str in query for str in [r'hi', 'hello', 'good morning', 'good evening']):
 
             # WELCOME
             welcome()
 
+        elif 'goodnight' in query:
+
+            #
+            talk('Have a good night')
+
         elif any(str in query for str in ['exit', 'bye', 'turn off']):
 
+            talk('ok')
             # FALSE
             KronusActivated = False
 
@@ -368,3 +415,18 @@ if __name__ == '__main__':
 
             # FALSE
             SecondOrderActivated = False
+
+        elif 'open' in query:
+            
+            query = query.replace('open', '')
+            query = query.replace(' ', '')
+
+            if re.match(regexUri, query):
+                # OPEN URL
+                openWebsite(removeWord(query))
+
+        elif 'where is' in query:
+
+            query = query.replace('where is', '')
+            
+            openMap(removeWord(query))
