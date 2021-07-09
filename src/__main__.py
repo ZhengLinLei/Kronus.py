@@ -34,6 +34,7 @@ import random
 import subprocess
 import pyautogui # CREATE GUI
 from PIL import Image
+from covid import Covid
 
 
 import nltk
@@ -41,7 +42,7 @@ from nltk.corpus import stopwords # REMOVE STOP WORDS
 from nltk.tokenize import word_tokenize
 
 stopWords = stopwords.words('english')
-stopWords.extend(['today', 'yesterday', 'tomorrow', 'search', 'send', "what's", 'tell'])
+stopWords.extend(['today', 'yesterday', 'tomorrow', 'search', 'send', "what's", 'tell', 'something', 'about'])
 
 import re
 
@@ -49,6 +50,10 @@ regexEmail = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 regexUri = r'[A-Za-z0-9]+\.[a-z]+'
 
 from sys import platform
+import inflect # NUMBER TO TEXT
+
+inflect = inflect.engine()
+numtw = inflect.number_to_words
 
 
 # ============================================================
@@ -65,7 +70,7 @@ for voice in voices:
         currentVoice = voice
 
 engine.setProperty('voice', currentVoice.id if currentVoice else voices[0].id) # SELECT INDEX 0 IDF DOESN'T EXIST ENGLISH LANGUAGE
-engine.setProperty('rate', 140)
+engine.setProperty('rate', 145)
 engine.setProperty('volume', 1.0)
 
 
@@ -157,6 +162,8 @@ def welcome():
     
     # FIRST LINE
     talk(f"{salute}. Kronus at your services, what can i help you?")
+
+    isInternetConnection()
 
 
 
@@ -302,6 +309,49 @@ def openMap(query):
     url = f'https://maps.google.com/?q={query}'
     openWebsite(url)
 
+
+def covid(query):
+    # CONNECT API
+    covid = Covid()
+    if query:
+
+        try:
+            # COUNTRY
+            if query.isdigit():
+                data = covid.get_status_by_country_id(query)
+            else:
+                data = covid.get_status_by_country_name(query)
+
+            txt = f'Right now {data["country"]} has: {numtw(data["confirmed"])} confirmed people, {numtw(data["active"])} current active people, {numtw(data["deaths"])} dead people by covid and {numtw(data["recovered"])} recovered'
+            print(txt)
+            talk(txt)
+
+        except Exception as e:
+            print(e)
+            talk(f"Sorry, there isn't nothing about coronavirus {query}")
+            pass
+    else:
+
+        data = sorted(covid.get_data(), key=lambda deaths: deaths['deaths'], reverse=True)[:3]
+
+        confirmed = covid.get_total_confirmed_cases()
+        active = covid.get_total_active_cases()
+        recovered = covid.get_total_recovered()
+        deaths = covid.get_total_deaths()
+
+        txt = f'''
+                    Updated from today, World coronavirus data: {numtw(confirmed)} confirmed people, {numtw(active)} current active people, {numtw(deaths)} dead people by covid and {numtw(recovered)} recovered.
+                    
+                    The first 3 country with more deaths are:
+
+                    1. {data[0]['country']}: {numtw(data[0]['deaths'])} deaths
+                    2. {data[1]['country']}: {numtw(data[1]['deaths'])} deaths
+                    3. {data[2]['country']}: {numtw(data[2]['deaths'])} deaths
+
+                '''
+        print(txt)
+        talk(txt)
+
 def isInternetConnection():
 
     if(not isInternet()):
@@ -430,3 +480,10 @@ if __name__ == '__main__':
             query = query.replace('where is', '')
             
             openMap(removeWord(query))
+
+        elif any(str in query for str in ['coronavirus', 'covid']):
+
+            # GET COVID DATA
+            for str in ['coronavirus', 'covid']: query = query.replace(str, '')
+
+            covid(removeWord(query))
