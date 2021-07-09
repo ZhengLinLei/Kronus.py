@@ -348,7 +348,7 @@ if __name__ == '__main__':
             talk("Yes, i'm here")
             talk("What can I help you?")
 
-        elif any(str in query for str in [r'hi', 'hello', 'good morning', 'good evening']):
+        elif any(str in query for str in ['hi ', 'hello', 'good morning', 'good evening']):
 
             # WELCOME
             welcome()
@@ -402,7 +402,7 @@ if __name__ == '__main__':
             talk("Ok! I'm taking a screenshot")
             screenshot() # SAVE AN SHOW SCREENSHOT
 
-        elif 'wikipedia' in query:
+        elif any(str in query for str in ['wikipedia', "what's", 'what is', 'search']):
             
             query = query.replace('wikipedia', '')
             wikipedia(removeWord(query)) # SEARCH
