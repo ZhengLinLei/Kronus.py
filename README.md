@@ -1,6 +1,10 @@
 <h1 align="center">Kronus.py</h1>
 
 <p align="center">
+    <img src="./docs/kronus.png" alt="Kronus.py Logo" />
+</p>
+
+<p align="center">
   <i>Chat and learn with Kronus, your virtual assistant</i>
 </p>
 
@@ -16,6 +20,7 @@
   </a>&nbsp;
   <a>
     <img src="https://img.shields.io/badge/version-1.0.Alpha-brightgreen" alt="Kronus.py Version" />
+  </a>
 </p>
 
 <hr>

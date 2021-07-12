@@ -42,7 +42,7 @@ from nltk.corpus import stopwords # REMOVE STOP WORDS
 from nltk.tokenize import word_tokenize
 
 stopWords = stopwords.words('english')
-stopWords.extend(['today', 'yesterday', 'tomorrow', 'search', 'send', "what's", 'tell', 'something', 'about'])
+stopWords.extend(['today', 'yesterday', 'tomorrow', 'search', 'send', "what's", 'tell', 'something', 'about', 'what', 'current'])
 
 import re
 
