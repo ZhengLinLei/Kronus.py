@@ -1,5 +1,5 @@
 {
-    "activated": false,
+    "activated": true,
     "server": "localhost",
     "port": 587,
     "login": {

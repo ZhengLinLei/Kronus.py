@@ -42,7 +42,7 @@ from nltk.corpus import stopwords # REMOVE STOP WORDS
 from nltk.tokenize import word_tokenize
 
 stopWords = stopwords.words('english')
-stopWords.extend(['today', 'yesterday', 'tomorrow', 'search', 'send', "what's", 'tell', 'something', 'about', 'what', 'current'])
+stopWords.extend(['today', 'yesterday', 'tomorrow', 'search', 'send', "what's", 'tell', 'something', 'about', 'what', 'current', 'take'])
 
 import re
 
@@ -197,11 +197,18 @@ print(emailSetting)
 
 def sendEmail():
     if emailSetting['activated']: # IF THE activated IS TRUE
-        server = smtplib.SMTP(emailSetting['server'], emailSetting['port'])
-        print('Conecting SMTP server...')
-        server.ehlo()
-        server.starttls()
-        server.login(emailSetting['login']['username'], emailSetting['login']['password'])
+        try:
+            server = smtplib.SMTP(emailSetting['server'], emailSetting['port'])
+            print('Conecting SMTP server...')
+            server.ehlo()
+            server.starttls()
+            server.login(emailSetting['login']['username'], emailSetting['login']['password'])
+        
+        except Exception as e:
+            talk('The server denied your connection')
+            print(e)
+            
+            return False
 
 
         params = [0, 0, 0] # [to, subject, msg]
