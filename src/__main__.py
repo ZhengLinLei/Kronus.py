@@ -55,6 +55,49 @@ import inflect # NUMBER TO TEXT
 inflect = inflect.engine()
 numtw = inflect.number_to_words
 
+# TKINTER GUI ----------------
+# import tkinter as tk
+# from tkinter import ttk
+from modules.tkinterAsync import Tkinter
+
+try:
+    with open(os.path.dirname(os.path.abspath(__file__)) + '/tkinter.setting.json', 'r') as reader:  # TKINTER SETTING ABS PATH
+        tkinterSetting = json.load(reader) # CONVERT TEXT TO PYTHON DICTIONARY
+        
+except Exception as e:
+    print(e)
+    tkinterSetting = {
+                        "activated": True,
+                        "height": 300,
+                        "width": 300
+                    }
+
+                    # DEFAULT VALUE IN CASE THE FILE DOEN'T EXIST
+
+print(tkinterSetting)
+
+OPENGUI = tkinterSetting['activated']
+
+def AppGui(root, tk, ttk):
+    root.title('Kronus.py Assistant')
+    root.geometry(f'{tkinterSetting["width"]}x{tkinterSetting["height"]}')
+
+    root.resizable(0, 0)
+
+    global titleApp
+    titleApp = tk.Label(root, text='Kronus')
+    titleApp.config(font=('Helvatical bold',18))
+    titleApp.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+def printApp(text):
+    if OPENGUI:
+        global titleApp
+        titleApp.config(text=text)
+
+if OPENGUI:
+    # IF THE OPTION IS ACTIVATED, WILL OPEN A WINDOW SECTION WITH CURRENT CONFIGURATION IN FILE
+    APP = Tkinter(AppGui)
+
 
 # ============================================================
 
@@ -86,14 +129,17 @@ def getOrders():
     listener = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
+        printApp('Listening...')
         # listener.pause_threshold = 1  FOR LOW SPEECH
         listener.adjust_for_ambient_noise(source)
         audio = listener.listen(source)
 
     try:
         print("Recognising...")
+        printApp("Recognising...")
         query = listener.recognize_google(audio) # USE GOOGLE RECOGNIZER
         print('Command: {query}'.format(query = query))
+        printApp(query)
 
     except Exception as e:
         print(e)
@@ -386,18 +432,18 @@ if __name__ == '__main__':
     welcome()
 
     KronusActivated = True
-    SecondOrderActivated = False # WHEN THE BOT ASK SOME QUESTION STOP THE MAIN RECOGNITION
+    # WHEN THE BOT ASK SOME QUESTION STOP THE MAIN RECOGNITION
+    SecondOrderActivated = False
 
     while KronusActivated:
 
         if(not SecondOrderActivated):
-            query = getOrders().lower() # GET COMMANDS
-        
+            query = getOrders().lower()  # GET COMMANDS
+
         else:
             query = ''
 
-
-        #------------------------------------------
+        # ------------------------------------------
 
         if any(str in query for str in ['kronus', 'cronus', 'canoes', 'canus', 'where are you', 'assistant', 'venus', 'krenus']):
 
@@ -418,6 +464,9 @@ if __name__ == '__main__':
         elif any(str in query for str in ['exit', 'bye', 'turn off']):
 
             talk('ok')
+
+            if OPENGUI:
+                APP.callback()
             # FALSE
             KronusActivated = False
 
@@ -435,34 +484,32 @@ if __name__ == '__main__':
 
             talk('My creator is Zheng Lin Lei')
 
-
         elif 'date' in query:
 
-            date() # GET THE CURRENT DATE
+            date()  # GET THE CURRENT DATE
 
         elif 'time' in query:
 
-            time() # CURRENT TIME
+            time()  # CURRENT TIME
 
         elif 'weather' in query:
 
             query = query.replace('weather', '')
-            weather(removeWord(query)) # THE WEATHER
-
+            weather(removeWord(query))  # THE WEATHER
 
         elif 'joke' in query:
 
-            joke() # SOME FUNNY JOKES
+            joke()  # SOME FUNNY JOKES
 
         elif 'screenshot' in query:
 
             talk("Ok! I'm taking a screenshot")
-            screenshot() # SAVE AN SHOW SCREENSHOT
+            screenshot()  # SAVE AN SHOW SCREENSHOT
 
         elif any(str in query for str in ['wikipedia', "what's", 'what is', 'search']):
-            
+
             query = query.replace('wikipedia', '')
-            wikipedia(removeWord(query)) # SEARCH
+            wikipedia(removeWord(query))  # SEARCH
 
         elif 'email' in query:
 
@@ -474,7 +521,7 @@ if __name__ == '__main__':
             SecondOrderActivated = False
 
         elif 'open' in query:
-            
+
             query = query.replace('open', '')
             query = query.replace(' ', '')
 
@@ -485,12 +532,13 @@ if __name__ == '__main__':
         elif 'where is' in query:
 
             query = query.replace('where is', '')
-            
+
             openMap(removeWord(query))
 
         elif any(str in query for str in ['coronavirus', 'covid']):
 
             # GET COVID DATA
-            for str in ['coronavirus', 'covid']: query = query.replace(str, '')
+            for str in ['coronavirus', 'covid']:
+                query = query.replace(str, '')
 
             covid(removeWord(query))
