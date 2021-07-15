@@ -153,6 +153,20 @@ Send an email
 And then if you want to enter the text manually you can say `manually` and then Kronus will open an input to enter the text.
 
 
+### Close Kronus GUI
+
+If you want to disable Kronus windows you can access between `tkinter.setting.json` file and change `activated = true` to `activated = false`.
+
+You can change the windows option too
+```JSON
+
+{
+    "activated": true,
+    "height": 300,
+    "width": 300
+}
+
+```
 
 
 
