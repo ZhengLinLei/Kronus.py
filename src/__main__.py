@@ -50,6 +50,7 @@ regexEmail = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 regexUri = r'[A-Za-z0-9]+\.[a-z]+'
 
 from sys import platform
+
 import inflect # NUMBER TO TEXT
 
 inflect = inflect.engine()
@@ -455,7 +456,7 @@ if __name__ == '__main__':
 
             # WELCOME
             welcome()
-
+            
         elif 'goodnight' in query:
 
             #

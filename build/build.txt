@@ -1,0 +1,7 @@
+How to build project correctly from Python Language to .exe for Windows OS?
+
+pyinstaller -n "Kronus" --icon=./build/ico.ico --noconsole --add-data './src/email.setting.json;.' --add-data './src/tkinter.setting.json' --add-data './build/ico.ico;data' ./src/__main__.py
+
+
+Debug:
+pyinstaller -n "Kronus" --icon=./build/ico.ico --noconsole --add-data './src/email.setting.json;.' --add-data './src/tkinter.setting.json;.' --add-data './build/ico.ico;data' --log-level DEBUG ./src/__main__.py

@@ -28,7 +28,7 @@
     <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="Kronus.py License" />
   </a>&nbsp;
   <a>
-    <img src="https://img.shields.io/badge/version-1.0-brightgreen" alt="Kronus.py Version" />
+    <img src="https://img.shields.io/badge/version-1.5-brightgreen" alt="Kronus.py Version" />
   </a>
 </p>
 
