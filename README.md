@@ -54,7 +54,7 @@ git clone https://github.com/ZhengLinLei/Kronus.py.git
 
 And manual download
 ```
-https://github.com/ZhengLinLei/TkAPI/archive/refs/heads/master.zip
+https://github.com/ZhengLinLei/Kronus.py/archive/refs/heads/master.zip
 ```
 
 
