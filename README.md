@@ -49,7 +49,7 @@
 
 Fir git users
 ```
-git clone https://github.com/ZhengLinLei/TkAPI.git
+git clone https://github.com/ZhengLinLei/Kronus.py.git
 ```
 
 And manual download
