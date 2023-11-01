@@ -50,6 +50,7 @@ regexEmail = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 regexUri = r'[A-Za-z0-9]+\.[a-z]+'
 
 from sys import platform
+import sys
 import inflect # NUMBER TO TEXT
 
 inflect = inflect.engine()
@@ -113,7 +114,7 @@ for voice in voices:
         currentVoice = voice
 
 engine.setProperty('voice', currentVoice.id if currentVoice else voices[0].id) # SELECT INDEX 0 IDF DOESN'T EXIST ENGLISH LANGUAGE
-engine.setProperty('rate', 145)
+engine.setProperty('rate', 180)
 engine.setProperty('volume', 1.0)
 
 
@@ -137,7 +138,7 @@ def getOrders():
     try:
         print("Recognising...")
         printApp("Recognising...")
-        query = listener.recognize_google(audio) # USE GOOGLE RECOGNIZER
+        query = listener.recognize_sphinx(audio) # NOT USING GOOGLE RECOGNIZER ANYMORE
         print('Command: {query}'.format(query = query))
         printApp(query)
 
@@ -428,6 +429,8 @@ def removeWord(query):
 
 if __name__ == '__main__':
 
+    KeyActivated = bool(sys.argv[1]) if len(sys.argv) > 1 else False
+
     # WELCOME
     welcome()
 
@@ -438,7 +441,12 @@ if __name__ == '__main__':
     while KronusActivated:
 
         if(not SecondOrderActivated):
-            query = getOrders().lower()  # GET COMMANDS
+            if KeyActivated:
+                # IF THE USER WANT TO USE THE KEYBOARD
+                query = input().lower()
+            else:
+                # IF THE USER WANT TO USE THE VOICE
+                query = getOrders().lower()  # GET COMMANDS
 
         else:
             query = ''

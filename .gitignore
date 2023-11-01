@@ -5,3 +5,5 @@ __pycache__
 email.setting.test.json
 tkinter.setting.test.json
 test.tkinter.py
+
+.DS_Store

@@ -1,0 +1,16 @@
+SpeechRecognition
+pyttsx3
+wikipedia
+pyjokes
+secure-smtplib
+PyAutoGUI
+nltk
+requests
+Pillow
+covid
+inflect
+datetime
+tk
+pyobjc
+PyAudio
+pocketsphinx
