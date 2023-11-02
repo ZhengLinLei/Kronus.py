@@ -109,9 +109,9 @@ voices = engine.getProperty('voices')
 currentVoice = False
 
 for voice in voices:
-    
-    if any(lang in voice.name for lang in ['english', 'English']):
+    if any(lang in voice.name for lang in ['english', 'English', 'en', 'EN', 'en-US', 'en-GB', 'US', 'GB']):
         currentVoice = voice
+        break
 
 engine.setProperty('voice', currentVoice.id if currentVoice else voices[0].id) # SELECT INDEX 0 IDF DOESN'T EXIST ENGLISH LANGUAGE
 engine.setProperty('rate', 180)
